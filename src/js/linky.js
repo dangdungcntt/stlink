@@ -1,11 +1,15 @@
 /*
   Add a button click handler to post our request.
 */
+var btn = document.querySelector('#btn-create');
+
 function eventHandlers() {
-  var btn = document.querySelector('#btn-create');
+  
   if(!btn){ return;}
   btn.addEventListener('click', function (event) {
     event.preventDefault();
+    btn.classList.add('btn-disabled');
+    btn.disabled = true;
     submitURL();
   }, false);
 }
@@ -19,11 +23,14 @@ function eventHandlers() {
 function submitURL() {
   var url = document.querySelector('#destination').value;
   fetch('/.netlify/functions/generate-route?to=' + url)
-  .then(function(response) { return response.json(); })
-  .then(function(data) {
-    document.querySelector("#message").innerHTML = `<a href="${data.url}">${data.url}</a>`;
-    return;
-  });
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      btn.classList.remove('btn-disabled');
+      btn.disabled = false;
+      document.querySelector("#message").innerHTML = `<a href="${data.url}">${data.url}</a>`;
+      return;
+    });
+  
 }
 
 
